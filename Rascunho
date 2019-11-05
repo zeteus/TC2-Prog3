@@ -1,0 +1,78 @@
+--- UML do trabalho de Java Prog3 ---
+
+class <<Sistema>>
+	
+class <<Docente>>
+	atributos::
+		int codigo;
+		string nome;
+		boll coordenador;		
+		date dataNascimento;
+		date dataIngresso;
+		map<cod, Publicacao> Publicacoes;
+	metodos::
+		quaisSaoSuasPublicacoes();
+class <<Publicacao>>
+	atributos::
+		int anoPublicacao;
+		
+class <<Veiculo>>
+	atributos::
+		char tipo;
+		string nome;
+		string issn;		
+		string sigla;
+		float fatorImpacto;
+	metodos::
+		quaisExistem();
+		qualPontuacaoCadaAno();
+		
+class <<Conferencia>> extends <<Publicacao>>
+
+class <<Periodico>> extends <<Publicacao>>
+
+class <<Regra>>
+
+
+
+formatos das entradas:
+
+class <docente>
+	int cod;
+	string nome;
+	date dataNascimento;
+	date dataIngresso;
+	boll coordenador;
+
+
+class <veículo>
+	string sigla;
+	string nome;
+	char tipo;
+	float fatorImpacto;
+	string issn;
+
+class <publicação>
+	int ano;
+	int numero;
+	int volumePeriodico;
+	int PagInicial;
+	int PagFinal;
+	string sigla;
+	string titulo;
+	string localConferencia;	
+	list <docente> docentes;
+
+class <qualificação>
+	int ano;
+	string siglaVeiculos;
+	string qualis;
+
+class <pontuação>
+	date dataInicio;
+	date dataFim;
+	list <quali> qualis;
+	list <ponto> pontos;
+	float multiplicadorPeriodicos;
+	int quatAnosConsiderar;
+	int pontuacaoMinRecredenciamento;
