@@ -1,15 +1,17 @@
 package PRPPG;
 
-public class Periodico extends Publicacao {
+public class Periodico extends Veiculo {
 
-    //ATRIBUTOS
 
+	//ATRIBUTOS
+    public String issn;
     //METODOS
 	// constructor
-	public Periodico(String nome, int codigo, int anoPublicacao) {
-		super(nome, codigo, anoPublicacao);
-		// TODO Auto-generated constructor stub
-	}
+    public Periodico(char tipo, String nome, String issn, String sigla, float fatorImpacto) {
+    	super(tipo, nome, sigla, fatorImpacto);
+    	this.issn = issn;
+    }
+	
 	
     // setters
 

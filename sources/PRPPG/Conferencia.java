@@ -1,14 +1,12 @@
 package PRPPG;
 
-public class Conferencia extends Publicacao {
-
+public class Conferencia extends Veiculo {
     //ATRIBUTOS
 
     //METODOS
 	// constructor
-	public Conferencia(String nome, int codigo, int anoPublicacao) {
-		super(nome, codigo, anoPublicacao);
-		// TODO Auto-generated constructor stub
+	public Conferencia(char tipo, String nome, String sigla, float fatorImpacto) {
+		super(tipo, nome, sigla, fatorImpacto);
 	}
 	
     // setters
