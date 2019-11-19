@@ -14,65 +14,23 @@ import java.util.List;
 public class Sistema {
     
 	public static void main(String[] args) {
-    	try {
-			int cod;
-			int ano;
-			int pont;
-			char tipo;
-			String line;
-			float impacto;
-			boolean coord;
-			Calendar dateN = Calendar.getInstance();
-			Calendar dateI = Calendar.getInstance();
-			SimpleDateFormat dma = new SimpleDateFormat("dd/MM/yyyy");
-			
-			// LEITURA DE DOCENTES
-			ArrayList<Docente> docentes = new ArrayList<Docente>();
-			BufferedReader bufferD = new BufferedReader(new InputStreamReader(new  FileInputStream(args[0]), args[1]));
-			line = bufferD.readLine();	// Ignora a primeira linha de leitura
-			while(line != null) {
-				line = bufferD.readLine();
-				infoDocentes = line.split(";");
-				cod = Integer.parseInt(infoDocentes[0]);
-				dateN.setTime(dma.parse(infoDocentes[2]));
-				dateI.setTime(dma.parse(infoDocentes[3]));
-				if(infoDocentes.length == 5) {coord = true;}
-				else {coord = false;}
-				Docente doc = new Docente(cod, infoDocentes[1], coord, dateN, dateI);
-				docentes.add(doc);
-			}
-			bufferD.close();
-			
-			// LEITURA DE VEICULOS
-			HashMap<String, Veiculo> veiculos = new HashMap<String, Veiculo>();
-			BufferedReader bufferV = new BufferedReader(new InputStreamReader(new  FileInputStream(args[0]), args[1]));
-			line = bufferV.readLine();	// Ignora a primeira linha de leitura
-			while(line != null) {
-				line = bufferV.readLine();
-				infoVeiculos = line.split(";");
-				tipo = infoVeiculos[2].charAt(0);
-				impacto = Float.parseFloat(infoVeiculos[3]);
-				Veiculo veic = null;
-				if(tipo == 'P') {veic = new Periodico(tipo, infoVeiculos[1], infoVeiculos[4], infoVeiculos[0], impacto);}
-				else if(tipo == 'C') {veic = new Conferencia(tipo, infoVeiculos[1], infoVeiculos[0], impacto);}
-				else {System.err.printf("Inconsistencia na entrada.\n");}
-				veiculos.put(veic.getSigla(), veic);
-			}
-			bufferV.close();
-    	} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
-		catch (ParseException e) {System.err.printf("Erro para converter a Data.\n");}
-
-//    	ArrayList<Docente> docentes = loadDocentes();
-//    	ArrayList<Veiculo> veiculos = loadVeiculos();
-//    	ArrayList<Qualis> qualis = loadQualis(veiculos);
-    	
+//    	ArrayList<Docente> docentes = loadDocentes(args[0], args[1]);
+//    	ArrayList<Veiculo> veiculos = loadVeiculos(args[0], args[1]);
+//    	ArrayList<Qualis>  qualis 	= loadQualis(veiculos, args[0], args[1]);
     }
-	public ArrayList<Docente> loadDocentes() {
+	
+	// LEITURA DE DOCENTES
+	public ArrayList<Docente> loadDocentes(String args1, String args2) {
+		int cod;
+		boolean coord;
 		String line;
 		String[] infoDocentes;
+		Calendar dateN = Calendar.getInstance();
+		Calendar dateI = Calendar.getInstance();
+		SimpleDateFormat dma = new SimpleDateFormat("dd/MM/yyyy");
 		ArrayList<Docente> docentes = new ArrayList<Docente>();
 		try {
-			BufferedReader bufferD = new BufferedReader(new InputStreamReader(new  FileInputStream(args[0]), args[1]));
+			BufferedReader bufferD = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
 			line = bufferD.readLine();	// Ignora a primeira linha de leitura
 			while(line != null) {
 				line = bufferD.readLine();
@@ -88,16 +46,45 @@ public class Sistema {
 			bufferD.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
 		catch (ParseException e) {System.err.printf("Erro para converter a Data.\n");}
+		return docentes;
 	}
-	public ArrayList<Qualis> loadQualis(HashMap<String, Veiculo> veiculos) {
+	
+	// LEITURA DE VEICULOS
+	public HashMap<String, Veiculo> loadVeiculos(String args1, String args2) {
+		char tipo;
+		float impacto;
+		String line;
+		String[] infoVeiculos;
+		HashMap<String, Veiculo> veiculos = new HashMap<String, Veiculo>();
+			try {
+				BufferedReader bufferV = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
+				line = bufferV.readLine();	// Ignora a primeira linha de leitura
+				while(line != null) {
+					line = bufferV.readLine();
+					infoVeiculos = line.split(";");
+					tipo = infoVeiculos[2].charAt(0);
+					impacto = Float.parseFloat(infoVeiculos[3]);
+					Veiculo veic = null;
+					if(tipo == 'P') {veic = new Periodico(tipo, infoVeiculos[1], infoVeiculos[4], infoVeiculos[0], impacto);}
+					else if(tipo == 'C') {veic = new Conferencia(tipo, infoVeiculos[1], infoVeiculos[0], impacto);}
+					else {System.err.printf("Inconsistencia na entrada.\n");}
+					veiculos.put(veic.getSigla(), veic);
+				}
+				bufferV.close();
+	    	} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
+			return veiculos;
+	}
+	
+	// LEITURA DE QUALIS
+	public ArrayList<Qualis> loadQualis(HashMap<String, Veiculo> veiculos, String args1, String args2) {
 		int ano;
 		double pont;
 		String line;
 		String[] infoQualis;
 		ArrayList<Qualis> qualis = new ArrayList<Qualis>();
 		try {
-			BufferedReader bufferQ = new BufferedReader(new InputStreamReader(new  FileInputStream(args[0]), args[1]));
-			line = bufferQ.readLine(); // Ignora a priimeira linha
+			BufferedReader bufferQ = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
+			line = bufferQ.readLine(); // Ignora a primeira linha
 			while(line != null) {
 				line = bufferQ.readLine();
 				infoQualis = line.split(";");
@@ -110,7 +97,6 @@ public class Sistema {
 			}
 			bufferQ.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
-		catch (ParseException e) {System.err.printf("Erro para converter a Data.\n");}
 		return qualis;
 	}
 }

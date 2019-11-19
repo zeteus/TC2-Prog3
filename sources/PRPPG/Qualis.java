@@ -19,6 +19,6 @@ public class Qualis {
 	public void setValor(String valor) {this.valor = valor;}
 	// getters
 	public int getAno() {return ano;}
-	public int getPonto() {return ponto;}
+	public double getPonto() {return ponto;}
 	public String getValor() {return valor;}
 }
