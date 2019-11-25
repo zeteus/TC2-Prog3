@@ -9,6 +9,7 @@ public class Veiculo {
     public String sigla;
     public float fatorImpacto;
     public HashMap<Integer,Qualis> qualis;
+    public HashMap<String,Publicacao> publicacoes;
     //METODOS
     // constructor
     public Veiculo(char tipo, String nome, String sigla, float fatorImpacto) {

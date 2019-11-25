@@ -5,7 +5,6 @@ public class Publicacao {
     public String nome;
     public int codigo;
     public int anoPublicacao;
-
     //METODOS
     // constructor
     public Publicacao(String nome, int codigo, int anoPublicacao) {

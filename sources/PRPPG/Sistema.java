@@ -10,15 +10,74 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import sun.security.util.Length;
+
 public class Sistema {
-    
+	//ATRIBUTOS
+	public int ano;
+	//METODOS
+	// setters
+	public void setAno(int ano) {this.ano = ano;}
+	// getters
+	public int getAno() {return this.ano;}
+	// MAIN
 	public static void main(String[] args) {
-//    	ArrayList<Docente> docentes = loadDocentes(args[0], args[1]);
-//    	ArrayList<Veiculo> veiculos = loadVeiculos(args[0], args[1]);
-//    	ArrayList<Qualis>  qualis 	= loadQualis(veiculos, args[0], args[1]);
-//		ArrayList<Regra>   regras	= loadRegras(args[0], args[1]);
-    }
-	
+		Sistema PPGI = new Sistema();
+		switch (args[0]) {
+			case "--read-only":
+				PPGI.read(args);
+				break;
+			
+			case "--write-only":
+				PPGI.write(args);
+				break;
+			
+			default:
+				PPGI.read(args);
+				PPGI.write(args);
+				break;
+		}
+	}
+
+	// WRITE
+	public void write(String[] args) {
+		
+	}
+
+	// READ
+	public void read(String[] args) {
+		for(int i = 0; i = args.length - 1; i++) {
+			switch (args[i]) {
+				case "-d":
+					ArrayList<Docente> docentes = this.loadDocentes(args[i], args[i + 1]);
+					break;
+				
+				case "-v":
+					HashMap<String, Veiculo> veiculos = this.loadVeiculos(args[i], args[i + 1]);
+					break;
+				
+				case "-p":
+					ArrayList<Publicacao> publicacoes = loadPublicacoes(args[i], args[i + 1]);
+					break;
+				
+				case "-q":
+					ArrayList<Qualis> qualis = loadQualis(veiculos, args[i], args[i + 1]);
+					break;
+				
+				case "-r":
+					ArrayList<Regra> regras = loadRegras(args[i], args[i + 1]);
+					break;
+				
+				case "-a":
+					this.setAno(Integer.parseInt(args[i + 1]));
+					break;
+				
+				default:
+					break;
+			}
+		}
+	}
+
 	// LEITURA DE DOCENTES
 	public ArrayList<Docente> loadDocentes(String args1, String args2) {
 		int cod;
@@ -104,6 +163,7 @@ public class Sistema {
 	public ArrayList<Regra> loadRegras(String args1,String args2){
 		int anos;
 		int pontMin;
+		float multp;
 		Calendar dateI = Calendar.getInstance();
 		Calendar dateF = Calendar.getInstance();
 		String line;
@@ -118,9 +178,10 @@ public class Sistema {
 				infoRegras = line.split(";");
 				dateI.setTime(dma.parse(infoRegras[0]));
 				dateF.setTime(dma.parse(infoRegras[1]));
+				multp = Float.parseFloat(infoRegras[4])
 				anos = Integer.parseInt(infoRegras[5]);
 				pontMin = Integer.parseInt(infoRegras[6]);
-				Regra r = new Regra(pontMin, anos, dateI, dateF);
+				Regra r = new Regra(pontMin, anos, multp, dateI, dateF);
 				regras.add(r);
 			}
 			bufferR.close();
@@ -128,4 +189,27 @@ public class Sistema {
 		catch (ParseException e) {System.err.printf("Erro para converter a Data.\n");}
 		return regras;
 	}
+
+	// LEITURA DE PUBLICACOES
+	public ArrayList<Publicacao> loadPublicacoes(String args1,String args2){
+		int codigo;
+		int anoPubli;
+		String line;
+		String[] infoPublicacoes;
+		ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
+		try {
+			BufferedReader bufferP = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
+			line = bufferP.readLine(); // Ignora a primeira linha
+			while(line != null) {
+				line = bufferP.readLine();
+				infoPublicacoes = line.split(";");
+				codigo = Integer.parseInt(infoPublicacoes[5]);
+				anoPubli = Integer.parseInt(infoPublicacoes[0]);
+				Publicacao publi = new Publicacao(infoPublicacoes[2], codigo, anoPubli);
+				publicacoes.add(publi);
+			}
+			bufferP.close();
+		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
+		return publicacoes;
+	} 
 }
