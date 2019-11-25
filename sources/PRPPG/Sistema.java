@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 
 public class Sistema {
     
@@ -17,6 +16,7 @@ public class Sistema {
 //    	ArrayList<Docente> docentes = loadDocentes(args[0], args[1]);
 //    	ArrayList<Veiculo> veiculos = loadVeiculos(args[0], args[1]);
 //    	ArrayList<Qualis>  qualis 	= loadQualis(veiculos, args[0], args[1]);
+//		ArrayList<Regra>   regras	= loadRegras(args[0], args[1]);
     }
 	
 	// LEITURA DE DOCENTES
@@ -98,5 +98,34 @@ public class Sistema {
 			bufferQ.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
 		return qualis;
+	}
+	
+	// LEITURA DE REGRAS
+	public ArrayList<Regra> loadRegras(String args1,String args2){
+		int anos;
+		int pontMin;
+		Calendar dateI = Calendar.getInstance();
+		Calendar dateF = Calendar.getInstance();
+		String line;
+		String[] infoRegras;
+		SimpleDateFormat dma = new SimpleDateFormat("dd/MM/yyyy");
+		ArrayList<Regra> regras = new ArrayList<Regra>();
+		try {
+			BufferedReader bufferR = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
+			line = bufferR.readLine(); // Ignora a primeira linha
+			while(line != null) {
+				line = bufferR.readLine();
+				infoRegras = line.split(";");
+				dateI.setTime(dma.parse(infoRegras[0]));
+				dateF.setTime(dma.parse(infoRegras[1]));
+				anos = Integer.parseInt(infoRegras[5]);
+				pontMin = Integer.parseInt(infoRegras[6]);
+				Regra r = new Regra(pontMin, anos, dateI, dateF);
+				regras.add(r);
+			}
+			bufferR.close();
+		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
+		catch (ParseException e) {System.err.printf("Erro para converter a Data.\n");}
+		return regras;
 	}
 }
