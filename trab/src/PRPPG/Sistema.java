@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import sun.security.util.Length;
+// import sun.security.util.Length;
 
 public class Sistema {
 	//ATRIBUTOS
@@ -61,7 +61,7 @@ public class Sistema {
 
 	// READ
 	public void read(String[] args) {
-		for(int i = 0; i = args.length - 1; i++) {
+		for(int i = 0; i <= args.length - 1; i++) {
 			switch (args[i]) {
 				case "-d":
 					this.setDocentes(this.loadDocentes(args[i], args[i + 1]));
@@ -95,7 +95,7 @@ public class Sistema {
 
 	// LEITURA DE DOCENTES
 	public ArrayList<Docente> loadDocentes(String args1, String args2) {
-		int cod;
+		long cod;
 		boolean coord;
 		String line;
 		String[] infoDocentes;
@@ -104,18 +104,19 @@ public class Sistema {
 		SimpleDateFormat dma = new SimpleDateFormat("dd/MM/yyyy");
 		ArrayList<Docente> docentes = new ArrayList<Docente>();
 		try {
-			BufferedReader bufferD = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
+			BufferedReader bufferD = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 			line = bufferD.readLine();	// Ignora a primeira linha de leitura
+			line = bufferD.readLine();
 			while(line != null) {
-				line = bufferD.readLine();
 				infoDocentes = line.split(";");
-				cod = Integer.parseInt(infoDocentes[0]);
+				cod = Long.parseLong(infoDocentes[0]);
 				dateN.setTime(dma.parse(infoDocentes[2]));
 				dateI.setTime(dma.parse(infoDocentes[3]));
 				if(infoDocentes.length == 5) {coord = true;}
 				else {coord = false;}
 				Docente doc = new Docente(cod, infoDocentes[1], coord, dateN, dateI);
 				docentes.add(doc);
+				line = bufferD.readLine();
 			}
 			bufferD.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
@@ -131,18 +132,19 @@ public class Sistema {
 		String[] infoVeiculos;
 		HashMap<String, Veiculo> veiculos = new HashMap<String, Veiculo>();
 			try {
-				BufferedReader bufferV = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
+				BufferedReader bufferV = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 				line = bufferV.readLine();	// Ignora a primeira linha de leitura
+				line = bufferV.readLine();
 				while(line != null) {
-					line = bufferV.readLine();
 					infoVeiculos = line.split(";");
 					tipo = infoVeiculos[2].charAt(0);
-					impacto = Float.parseFloat(infoVeiculos[3]);
+					impacto = Float.parseFloat(infoVeiculos[3].replace(',','.'));
 					Veiculo veic = null;
-					if(tipo == 'P') {veic = new Periodico(tipo, infoVeiculos[1], infoVeiculos[4], infoVeiculos[0], impacto);}
-					else if(tipo == 'C') {veic = new Conferencia(tipo, infoVeiculos[1], infoVeiculos[0], impacto);}
+					if(tipo == 'P') {veic = new Periodico(tipo, infoVeiculos[1], infoVeiculos[4], infoVeiculos[0].trim(), impacto);}
+					else if(tipo == 'C') {veic = new Conferencia(tipo, infoVeiculos[1], infoVeiculos[0].trim(), impacto);}
 					else {System.err.printf("Inconsistencia na entrada.\n");}
 					veiculos.put(veic.getSigla(), veic);
+					line = bufferV.readLine();
 				}
 				bufferV.close();
 	    	} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
@@ -157,17 +159,18 @@ public class Sistema {
 		String[] infoQualis;
 		ArrayList<Qualis> qualis = new ArrayList<Qualis>();
 		try {
-			BufferedReader bufferQ = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
+			BufferedReader bufferQ = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 			line = bufferQ.readLine(); // Ignora a primeira linha
+			line = bufferQ.readLine();
 			while(line != null) {
-				line = bufferQ.readLine();
 				infoQualis = line.split(";");
 				ano = Integer.parseInt(infoQualis[0]);
 				pont = 1; // TODO precisa olhar a regra
 				Qualis quali = new Qualis(ano, pont, infoQualis[2]);
 				qualis.add(quali);
-				Veiculo veic = this.veiculos.get(infoQualis[1]);
+				Veiculo veic = this.veiculos.get(infoQualis[1].trim());
 				veic.addQualis(quali);
+				line = bufferQ.readLine();
 			}
 			bufferQ.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
@@ -186,18 +189,19 @@ public class Sistema {
 		SimpleDateFormat dma = new SimpleDateFormat("dd/MM/yyyy");
 		ArrayList<Regra> regras = new ArrayList<Regra>();
 		try {
-			BufferedReader bufferR = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
+			BufferedReader bufferR = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 			line = bufferR.readLine(); // Ignora a primeira linha
+			line = bufferR.readLine();
 			while(line != null) {
-				line = bufferR.readLine();
 				infoRegras = line.split(";");
 				dateI.setTime(dma.parse(infoRegras[0]));
 				dateF.setTime(dma.parse(infoRegras[1]));
-				multp = Float.parseFloat(infoRegras[4]);
+				multp = Float.parseFloat(infoRegras[4].replace(',','.'));
 				anos = Integer.parseInt(infoRegras[5]);
 				pontMin = Integer.parseInt(infoRegras[6]);
 				Regra r = new Regra(pontMin, anos, multp, dateI, dateF);
 				regras.add(r);
+				line = bufferR.readLine();
 			}
 			bufferR.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
@@ -207,21 +211,22 @@ public class Sistema {
 
 	// LEITURA DE PUBLICACOES
 	public ArrayList<Publicacao> loadPublicacoes(String args1,String args2){
-		int codigo;
+		int num;
 		int anoPubli;
 		String line;
 		String[] infoPublicacoes;
 		ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
 		try {
-			BufferedReader bufferP = new BufferedReader(new InputStreamReader(new  FileInputStream(args1), args2));
+			BufferedReader bufferP = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 			line = bufferP.readLine(); // Ignora a primeira linha
+			line = bufferP.readLine();
 			while(line != null) {
-				line = bufferP.readLine();
 				infoPublicacoes = line.split(";");
-				codigo = Integer.parseInt(infoPublicacoes[5]);
+				num = Integer.parseInt(infoPublicacoes[4]);
 				anoPubli = Integer.parseInt(infoPublicacoes[0]);
-				Publicacao publi = new Publicacao(infoPublicacoes[2], codigo, anoPubli);
+				Publicacao publi = new Publicacao(infoPublicacoes[2], num, anoPubli);
 				publicacoes.add(publi);
+				line = bufferP.readLine();
 			}
 			bufferP.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}

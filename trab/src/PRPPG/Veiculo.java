@@ -17,7 +17,9 @@ public class Veiculo {
     	this.tipo = tipo;
     	this.nome = nome;
     	this.sigla = sigla;
-    	this.fatorImpacto = fatorImpacto;
+        this.fatorImpacto = fatorImpacto;
+        this.qualis = new HashMap<Integer, Qualis>();
+        this.publicacoes = new HashMap<String, Publicacao>();
     }
     // setters
     public void setTipo(char tipo) {this.tipo = tipo;}

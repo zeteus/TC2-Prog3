@@ -3,22 +3,22 @@ package PRPPG;
 public class Publicacao {
     //ATRIBUTOS
     public String nome;
-    public int codigo;
+    public int numero;
     public int anoPublicacao;
     //METODOS
     // constructor
-    public Publicacao(String nome, int codigo, int anoPublicacao) {
+    public Publicacao(String nome, int numero, int anoPublicacao) {
     	super();
     	this.nome = nome;
-    	this.codigo = codigo;
-    	this.anoPublicacao = anoPublicacao;
+    	this.numero = numero;
+        this.anoPublicacao = anoPublicacao;
     }
     // setters
     public void setNome(String nome) {this.nome = nome;}
-	public void setCodigo(int cod) {this.codigo = cod;}
+	public void setNumero(int cod) {this.numero = cod;}
     public void setAnoPublicacao(int anoP) {this.anoPublicacao = anoP;}
     // getters
     public String getNome() {return this.nome;}
-    public int getCodigo() {return this.codigo;}
+    public int getNumero() {return this.numero;}
     public int getAnoPublicacao() {return this.anoPublicacao;}
 }
