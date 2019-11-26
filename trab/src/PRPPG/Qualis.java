@@ -7,10 +7,9 @@ public class Qualis {
 	public String valor;
 	//METODOS
     // constructor
-	public Qualis(int ano, double ponto, String valor) {
+	public Qualis(int ano, String valor) {
 		super();
 		this.ano = ano;
-		this.ponto = ponto;
 		this.valor = valor;
 	}
 	// setters

@@ -21,20 +21,18 @@ public class Sistema {
 	public ArrayList<Qualis> qualis;
 	public ArrayList<Regra> regras;
 	//METODOS
+	// constructor
+	public Sistema() {
+		this.docentes = new HashMap<Long, Docente>();
+		this.veiculos = new HashMap<String, Veiculo>();
+		this.publicacoes = new ArrayList<Publicacao>();
+		this.qualis = new ArrayList<Qualis>();
+		this.regras = new ArrayList<Regra>();
+	}
 	// setters
 	private void setAno(int ano) {this.ano = ano;}
-	private void setDocentes(HashMap<Long, Docente> doc) {this.docentes = doc;}
-	private void setPublicacoes(ArrayList<Publicacao> publi) {this.publicacoes = publi;}
-	private void setVeiculos(HashMap<String, Veiculo> veic) {this.veiculos = veic;}
-	private void setQualis(ArrayList<Qualis> qualis) {this.qualis = qualis;}
-	private void setRegras(ArrayList<Regra> regras) {this.regras = regras;}
 	// getters
 	public int getAno() {return this.ano;}
-	public HashMap<Long, Docente> getDocentes() {return this.docentes;}
-	public ArrayList<Publicacao> getPublicacoes() {return this.publicacoes;}
-	public HashMap<String, Veiculo> getVeiculos() {return this.veiculos;}
-	public ArrayList<Qualis> getQualis() {return this.qualis;}
-	public ArrayList<Regra> getRegras() {return this.regras;}
 	// MAIN
 	public static void main(String[] args) {
 		Sistema PPGI = new Sistema();
@@ -64,23 +62,23 @@ public class Sistema {
 		for(int i = 0; i <= args.length - 1; i++) {
 			switch (args[i]) {
 				case "-d":
-					this.setDocentes(this.loadDocentes(args[i], args[i + 1]));
+					this.loadDocentes(args[i], args[i + 1]);
 					break;
 				
 				case "-v":
-					this.setVeiculos(this.loadVeiculos(args[i], args[i + 1]));
+					this.loadVeiculos(args[i], args[i + 1]);
 					break;
 				
 				case "-p":
-					this.setPublicacoes(this.loadPublicacoes(args[i], args[i + 1]));
+					this.loadPublicacoes(args[i], args[i + 1]);
 					break;
 				
 				case "-q":
-					this.setQualis(this.loadQualis(args[i], args[i + 1]));
+					this.loadQualis(args[i], args[i + 1]);
 					break;
 				
 				case "-r":
-					this.setRegras(this.loadRegras(args[i], args[i + 1]));
+					this.loadRegras(args[i], args[i + 1]);
 					break;
 				
 				case "-a":
@@ -94,7 +92,7 @@ public class Sistema {
 	}
 
 	// LEITURA DE DOCENTES
-	public HashMap<Long, Docente> loadDocentes(String args1, String args2) {
+	public void loadDocentes(String args1, String args2) {
 		long cod;
 		boolean coord;
 		String line;
@@ -102,7 +100,6 @@ public class Sistema {
 		Calendar dateN = Calendar.getInstance();
 		Calendar dateI = Calendar.getInstance();
 		SimpleDateFormat dma = new SimpleDateFormat("dd/MM/yyyy");
-		HashMap<Long, Docente> docentes = new HashMap<Long, Docente>();
 		try {
 			BufferedReader bufferD = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 			line = bufferD.readLine();	// Ignora a primeira linha de leitura
@@ -115,22 +112,20 @@ public class Sistema {
 				if(infoDocentes.length == 5) {coord = true;}
 				else {coord = false;}
 				Docente doc = new Docente(cod, infoDocentes[1], coord, dateN, dateI);
-				docentes.put(doc.getCodigo(), doc);
+				this.docentes.put(doc.getCodigo(), doc);
 				line = bufferD.readLine();
 			}
 			bufferD.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
 		catch (ParseException e) {System.err.printf("Erro para converter a Data.\n");}
-		return docentes;
 	}
 	
 	// LEITURA DE VEICULOS
-	public HashMap<String, Veiculo> loadVeiculos(String args1, String args2) {
+	public void loadVeiculos(String args1, String args2) {
 		char tipo;
 		float impacto;
 		String line;
 		String[] infoVeiculos;
-		HashMap<String, Veiculo> veiculos = new HashMap<String, Veiculo>();
 			try {
 				BufferedReader bufferV = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 				line = bufferV.readLine();	// Ignora a primeira linha de leitura
@@ -143,21 +138,19 @@ public class Sistema {
 					if(tipo == 'P') {veic = new Periodico(tipo, infoVeiculos[1], infoVeiculos[4], infoVeiculos[0].trim(), impacto);}
 					else if(tipo == 'C') {veic = new Conferencia(tipo, infoVeiculos[1], infoVeiculos[0].trim(), impacto);}
 					else {System.err.printf("Inconsistencia na entrada.\n");}
-					veiculos.put(veic.getSigla(), veic);
+					this.veiculos.put(veic.getSigla(), veic);
 					line = bufferV.readLine();
 				}
 				bufferV.close();
 	    	} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
-			return veiculos;
 	}
 	
 	// LEITURA DE QUALIS
-	public ArrayList<Qualis> loadQualis(String args1, String args2) {
+	public void loadQualis(String args1, String args2) {
 		int ano;
 		double pont;
 		String line;
 		String[] infoQualis;
-		ArrayList<Qualis> qualis = new ArrayList<Qualis>();
 		try {
 			BufferedReader bufferQ = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 			line = bufferQ.readLine(); // Ignora a primeira linha
@@ -165,20 +158,18 @@ public class Sistema {
 			while(line != null) {
 				infoQualis = line.split(";");
 				ano = Integer.parseInt(infoQualis[0]);
-				pont = 1; // TODO precisa olhar a regra
-				Qualis quali = new Qualis(ano, pont, infoQualis[2]);
-				qualis.add(quali);
+				Qualis quali = new Qualis(ano, infoQualis[2]);
+				this.qualis.add(quali);
 				Veiculo veic = this.veiculos.get(infoQualis[1].trim());
 				veic.addQualis(quali);
 				line = bufferQ.readLine();
 			}
 			bufferQ.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
-		return qualis;
 	}
 	
 	// LEITURA DE REGRAS
-	public ArrayList<Regra> loadRegras(String args1,String args2){
+	public void loadRegras(String args1,String args2){
 		int anos;
 		int pontMin;
 		float multp;
@@ -188,7 +179,6 @@ public class Sistema {
 		String[] infoRegras;
 		String[] listQualis;
 		SimpleDateFormat dma = new SimpleDateFormat("dd/MM/yyyy");
-		ArrayList<Regra> regras = new ArrayList<Regra>();
 		try {
 			BufferedReader bufferR = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 			line = bufferR.readLine(); // Ignora a primeira linha
@@ -204,17 +194,16 @@ public class Sistema {
 				anos = Integer.parseInt(infoRegras[5]);
 				pontMin = Integer.parseInt(infoRegras[6]);
 				Regra r = new Regra(pontMin, anos, multp, dateI, dateF);
-				regras.add(r);
+				this.regras.add(r);
 				line = bufferR.readLine();
 			}
 			bufferR.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
 		catch (ParseException e) {System.err.printf("Erro para converter a Data.\n");}
-		return regras;
 	}
 
 	// LEITURA DE PUBLICACOES
-	public ArrayList<Publicacao> loadPublicacoes(String args1,String args2){
+	public void loadPublicacoes(String args1,String args2){
 		int num;
 		int pagI;
 		int pagF;
@@ -222,7 +211,6 @@ public class Sistema {
 		String line;
 		String[] infoPublicacoes;
 		String[] listDocs;
-		ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
 		try {
 			BufferedReader bufferP = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 			line = bufferP.readLine(); // Ignora a primeira linha
@@ -235,7 +223,7 @@ public class Sistema {
 				pagI = Integer.parseInt(infoPublicacoes[7]);
 				pagF = Integer.parseInt(infoPublicacoes[8]);
 				Publicacao publi = new Publicacao(infoPublicacoes[2], num, anoPubli, pagI, pagF);
-				publicacoes.add(publi);
+				this.publicacoes.add(publi);
 				listDocs = infoPublicacoes[3].split(",");
 				for(int i = 0; i < listDocs.length; i++) {
 					Docente doc = this.docentes.get(Long.parseLong(listDocs[i].trim()));
@@ -250,6 +238,5 @@ public class Sistema {
 			}
 			bufferP.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
-		return publicacoes;
 	} 
 }
