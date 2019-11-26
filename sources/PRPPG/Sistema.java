@@ -15,11 +15,26 @@ import sun.security.util.Length;
 public class Sistema {
 	//ATRIBUTOS
 	public int ano;
+	public ArrayList<Docente> docentes;
+	public HashMap<String, Veiculo> veiculos;
+	public ArrayList<Publicacao> publicacoes;
+	public ArrayList<Qualis> qualis;
+	public ArrayList<Regra> regras;
 	//METODOS
 	// setters
 	public void setAno(int ano) {this.ano = ano;}
+	public void setDocentes(ArrayList<Docente> doc) {this.docentes = doc;}
+	public void setPublicacoes(ArrayList<Publicacao> publi) {this.publicacoes = publi;}
+	public void setVeiculos(HashMap<String, Veiculo> veic) {this.veiculos = veic;}
+	public void setQualis(ArrayList<Qualis> qualis) {this.qualis = qualis;}
+	public void setRegras(ArrayList<Regra> regras) {this.regras = regras;}
 	// getters
 	public int getAno() {return this.ano;}
+	public ArrayList<Docente> getDocentes() {return this.docentes;}
+	public ArrayList<Publicacao> getPublicacoes() {return this.publicacoes;}
+	public HashMap<String, Veiculo> getVeiculos() {return this.veiculos;}
+	public ArrayList<Qualis> getQualis() {return this.qualis;}
+	public ArrayList<Regra> getRegras() {return this.regras;}
 	// MAIN
 	public static void main(String[] args) {
 		Sistema PPGI = new Sistema();
@@ -49,23 +64,23 @@ public class Sistema {
 		for(int i = 0; i = args.length - 1; i++) {
 			switch (args[i]) {
 				case "-d":
-					ArrayList<Docente> docentes = this.loadDocentes(args[i], args[i + 1]);
+					this.setDocentes(this.loadDocentes(args[i], args[i + 1]));
 					break;
 				
 				case "-v":
-					HashMap<String, Veiculo> veiculos = this.loadVeiculos(args[i], args[i + 1]);
+					this.setVeiculos(this.loadVeiculos(args[i], args[i + 1]));
 					break;
 				
 				case "-p":
-					ArrayList<Publicacao> publicacoes = loadPublicacoes(args[i], args[i + 1]);
+					this.setPublicacoes(this.loadPublicacoes(args[i], args[i + 1]));
 					break;
 				
 				case "-q":
-					ArrayList<Qualis> qualis = loadQualis(veiculos, args[i], args[i + 1]);
+					this.setQualis(this.loadQualis(args[i], args[i + 1]));
 					break;
 				
 				case "-r":
-					ArrayList<Regra> regras = loadRegras(args[i], args[i + 1]);
+					this.setRegras(this.loadRegras(args[i], args[i + 1]));
 					break;
 				
 				case "-a":
@@ -135,7 +150,7 @@ public class Sistema {
 	}
 	
 	// LEITURA DE QUALIS
-	public ArrayList<Qualis> loadQualis(HashMap<String, Veiculo> veiculos, String args1, String args2) {
+	public ArrayList<Qualis> loadQualis(String args1, String args2) {
 		int ano;
 		double pont;
 		String line;
@@ -151,7 +166,7 @@ public class Sistema {
 				pont = 1; // TODO precisa olhar a regra
 				Qualis quali = new Qualis(ano, pont, infoQualis[2]);
 				qualis.add(quali);
-				Veiculo veic = veiculos.get(infoQualis[1]);
+				Veiculo veic = this.veiculos.get(infoQualis[1]);
 				veic.addQualis(quali);
 			}
 			bufferQ.close();
@@ -178,7 +193,7 @@ public class Sistema {
 				infoRegras = line.split(";");
 				dateI.setTime(dma.parse(infoRegras[0]));
 				dateF.setTime(dma.parse(infoRegras[1]));
-				multp = Float.parseFloat(infoRegras[4])
+				multp = Float.parseFloat(infoRegras[4]);
 				anos = Integer.parseInt(infoRegras[5]);
 				pontMin = Integer.parseInt(infoRegras[6]);
 				Regra r = new Regra(pontMin, anos, multp, dateI, dateF);
