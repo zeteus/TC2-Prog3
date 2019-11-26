@@ -22,10 +22,10 @@ public class Veiculo {
         this.publicacoes = new HashMap<String, Publicacao>();
     }
     // setters
-    public void setTipo(char tipo) {this.tipo = tipo;}
-	public void setNome(String nome) {this.nome = nome;}
-    public void setSigla(String sigla) {this.sigla = sigla;}
-    public void setFatorImpacto(float fatI) {this.fatorImpacto = fatI;}
+    private void setTipo(char tipo) {this.tipo = tipo;}
+	private void setNome(String nome) {this.nome = nome;}
+    private void setSigla(String sigla) {this.sigla = sigla;}
+    private void setFatorImpacto(float fatI) {this.fatorImpacto = fatI;}
     // getters
     public char getTipo() {return this.tipo;}
     public String getNome() {return this.nome;}
@@ -33,4 +33,5 @@ public class Veiculo {
     public float getFatorImpacto() {return this.fatorImpacto;}
 
     public void addQualis(Qualis q) {this.qualis.put(q.getAno(), q);}
+    public void addPublicacao(Publicacao p) {this.publicacoes.put(p.getNome(), p);}
 }

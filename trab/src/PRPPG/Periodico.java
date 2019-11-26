@@ -11,9 +11,8 @@ public class Periodico extends Veiculo {
     	super(tipo, nome, sigla, fatorImpacto);
     	this.issn = issn;
     }
-	
-	
     // setters
-
+    private void setIssn(String issn) {this.issn = issn;}
     // getters
+    public String getIssn() {return this.issn;}
 }

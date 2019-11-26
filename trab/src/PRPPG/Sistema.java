@@ -15,22 +15,22 @@ import java.util.HashMap;
 public class Sistema {
 	//ATRIBUTOS
 	public int ano;
-	public ArrayList<Docente> docentes;
+	public HashMap<Long, Docente> docentes;
 	public HashMap<String, Veiculo> veiculos;
 	public ArrayList<Publicacao> publicacoes;
 	public ArrayList<Qualis> qualis;
 	public ArrayList<Regra> regras;
 	//METODOS
 	// setters
-	public void setAno(int ano) {this.ano = ano;}
-	public void setDocentes(ArrayList<Docente> doc) {this.docentes = doc;}
-	public void setPublicacoes(ArrayList<Publicacao> publi) {this.publicacoes = publi;}
-	public void setVeiculos(HashMap<String, Veiculo> veic) {this.veiculos = veic;}
-	public void setQualis(ArrayList<Qualis> qualis) {this.qualis = qualis;}
-	public void setRegras(ArrayList<Regra> regras) {this.regras = regras;}
+	private void setAno(int ano) {this.ano = ano;}
+	private void setDocentes(HashMap<Long, Docente> doc) {this.docentes = doc;}
+	private void setPublicacoes(ArrayList<Publicacao> publi) {this.publicacoes = publi;}
+	private void setVeiculos(HashMap<String, Veiculo> veic) {this.veiculos = veic;}
+	private void setQualis(ArrayList<Qualis> qualis) {this.qualis = qualis;}
+	private void setRegras(ArrayList<Regra> regras) {this.regras = regras;}
 	// getters
 	public int getAno() {return this.ano;}
-	public ArrayList<Docente> getDocentes() {return this.docentes;}
+	public HashMap<Long, Docente> getDocentes() {return this.docentes;}
 	public ArrayList<Publicacao> getPublicacoes() {return this.publicacoes;}
 	public HashMap<String, Veiculo> getVeiculos() {return this.veiculos;}
 	public ArrayList<Qualis> getQualis() {return this.qualis;}
@@ -94,7 +94,7 @@ public class Sistema {
 	}
 
 	// LEITURA DE DOCENTES
-	public ArrayList<Docente> loadDocentes(String args1, String args2) {
+	public HashMap<Long, Docente> loadDocentes(String args1, String args2) {
 		long cod;
 		boolean coord;
 		String line;
@@ -102,7 +102,7 @@ public class Sistema {
 		Calendar dateN = Calendar.getInstance();
 		Calendar dateI = Calendar.getInstance();
 		SimpleDateFormat dma = new SimpleDateFormat("dd/MM/yyyy");
-		ArrayList<Docente> docentes = new ArrayList<Docente>();
+		HashMap<Long, Docente> docentes = new HashMap<Long, Docente>();
 		try {
 			BufferedReader bufferD = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
 			line = bufferD.readLine();	// Ignora a primeira linha de leitura
@@ -115,7 +115,7 @@ public class Sistema {
 				if(infoDocentes.length == 5) {coord = true;}
 				else {coord = false;}
 				Docente doc = new Docente(cod, infoDocentes[1], coord, dateN, dateI);
-				docentes.add(doc);
+				docentes.put(doc.getCodigo(), doc);
 				line = bufferD.readLine();
 			}
 			bufferD.close();
@@ -186,6 +186,7 @@ public class Sistema {
 		Calendar dateF = Calendar.getInstance();
 		String line;
 		String[] infoRegras;
+		String[] listQualis;
 		SimpleDateFormat dma = new SimpleDateFormat("dd/MM/yyyy");
 		ArrayList<Regra> regras = new ArrayList<Regra>();
 		try {
@@ -194,6 +195,9 @@ public class Sistema {
 			line = bufferR.readLine();
 			while(line != null) {
 				infoRegras = line.split(";");
+				for(String s: infoRegras){s = s.trim();}
+				listQualis = infoRegras[2].split(",");
+				for(String s: listQualis){s = s.trim();}
 				dateI.setTime(dma.parse(infoRegras[0]));
 				dateF.setTime(dma.parse(infoRegras[1]));
 				multp = Float.parseFloat(infoRegras[4].replace(',','.'));
@@ -212,9 +216,12 @@ public class Sistema {
 	// LEITURA DE PUBLICACOES
 	public ArrayList<Publicacao> loadPublicacoes(String args1,String args2){
 		int num;
+		int pagI;
+		int pagF;
 		int anoPubli;
 		String line;
 		String[] infoPublicacoes;
+		String[] listDocs;
 		ArrayList<Publicacao> publicacoes = new ArrayList<Publicacao>();
 		try {
 			BufferedReader bufferP = new BufferedReader(new InputStreamReader(new  FileInputStream(args2)));
@@ -222,10 +229,25 @@ public class Sistema {
 			line = bufferP.readLine();
 			while(line != null) {
 				infoPublicacoes = line.split(";");
+				for(String s: infoPublicacoes){s = s.trim();}
 				num = Integer.parseInt(infoPublicacoes[4]);
 				anoPubli = Integer.parseInt(infoPublicacoes[0]);
-				Publicacao publi = new Publicacao(infoPublicacoes[2], num, anoPubli);
+				pagI = Integer.parseInt(infoPublicacoes[7]);
+				pagF = Integer.parseInt(infoPublicacoes[8]);
+				System.out.println(infoPublicacoes[2]);
+				Publicacao publi = new Publicacao(infoPublicacoes[2], num, anoPubli, pagI, pagF);
 				publicacoes.add(publi);
+				listDocs = infoPublicacoes[3].split(",");
+				for(int i = 0; i < listDocs.length; i++) {
+					System.out.println(listDocs[i]);
+					Docente doc = this.docentes.get(Long.parseLong(listDocs[i].trim()));
+					doc.addPublicacao(publi);
+				}
+				Veiculo veic = this.veiculos.get(infoPublicacoes[1]);
+				veic.addPublicacao(publi);
+				if(veic.getTipo() == 'C') {publi.setVolumeLocal(infoPublicacoes[6]);}
+				else if(veic.getTipo() == 'P'){publi.setVolumeLocal(infoPublicacoes[5]);}
+				else {System.out.printf("Erro de Parse \n");}
 				line = bufferP.readLine();
 			}
 			bufferP.close();

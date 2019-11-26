@@ -9,7 +9,7 @@ public class Docente {
     public boolean coordenador;		
     public Calendar dataNascimento;
     public Calendar dataIngresso;
-    public HashMap<Integer, Publicacao> publicacoes;
+    public HashMap<String, Publicacao> publicacoes;
 
     // METODOS
     // constructor
@@ -20,14 +20,14 @@ public class Docente {
     	this.coordenador = coordenador;
     	this.dataNascimento = dataNascimento;
         this.dataIngresso = dataIngresso;
-        this.publicacoes = new HashMap<Integer, Publicacao>();
+        this.publicacoes = new HashMap<String, Publicacao>();
     }
 	// setters
-    public void setCodigo(long cod) {this.codigo = cod;}
-	public void setNome(String nome) {this.nome = nome;}
-    public void setCoordenador(boolean coord) {this.coordenador = coord;}
-    public void setDataNascimento(Calendar dataN) {this.dataNascimento = dataN;}
-    public void setDataIngresso(Calendar dataI) {this.dataIngresso = dataI;}
+    private void setCodigo(long cod) {this.codigo = cod;}
+	private void setNome(String nome) {this.nome = nome;}
+    private void setCoordenador(boolean coord) {this.coordenador = coord;}
+    private void setDataNascimento(Calendar dataN) {this.dataNascimento = dataN;}
+    private void setDataIngresso(Calendar dataI) {this.dataIngresso = dataI;}
     // getters
     public long getCodigo() {return this.codigo;}
     public String getNome() {return this.nome;}
@@ -35,7 +35,6 @@ public class Docente {
     public Calendar getDataNascimento() {return this.dataNascimento;}
     public Calendar getDataIngresso() {return this.dataIngresso;}
 
-    public void quaisSaoSuasPublicacoes() {
-    	return;
-    }
+    public void addPublicacao(Publicacao p) {this.publicacoes.put(p.getNome(), p);}
+    public void quaisSaoSuasPublicacoes() {return;}
 }

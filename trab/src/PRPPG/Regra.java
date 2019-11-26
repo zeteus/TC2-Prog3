@@ -20,10 +20,10 @@ public class Regra {
 		this.dataFim = dataFim;
 	}
     // setters
-	public void setPontuacaoMin(int pontuacaoMin) {this.pontuacaoMin = pontuacaoMin;}
-	public void setAnosConsiderados(int anosConsiderados) {this.anosConsiderados = anosConsiderados;}
-	public void setDataInicio(Calendar dataInicio) {this.dataInicio = dataInicio;}
-	public void setDataFim(Calendar dataFim) {this.dataFim = dataFim;}
+	private void setPontuacaoMin(int pontuacaoMin) {this.pontuacaoMin = pontuacaoMin;}
+	private void setAnosConsiderados(int anosConsiderados) {this.anosConsiderados = anosConsiderados;}
+	private void setDataInicio(Calendar dataInicio) {this.dataInicio = dataInicio;}
+	private void setDataFim(Calendar dataFim) {this.dataFim = dataFim;}
 
     // getters
 	public int getPontuacaoMin() {return pontuacaoMin;}
