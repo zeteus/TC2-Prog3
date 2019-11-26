@@ -234,16 +234,14 @@ public class Sistema {
 				anoPubli = Integer.parseInt(infoPublicacoes[0]);
 				pagI = Integer.parseInt(infoPublicacoes[7]);
 				pagF = Integer.parseInt(infoPublicacoes[8]);
-				System.out.println(infoPublicacoes[2]);
 				Publicacao publi = new Publicacao(infoPublicacoes[2], num, anoPubli, pagI, pagF);
 				publicacoes.add(publi);
 				listDocs = infoPublicacoes[3].split(",");
 				for(int i = 0; i < listDocs.length; i++) {
-					System.out.println(listDocs[i]);
 					Docente doc = this.docentes.get(Long.parseLong(listDocs[i].trim()));
 					doc.addPublicacao(publi);
 				}
-				Veiculo veic = this.veiculos.get(infoPublicacoes[1]);
+				Veiculo veic = this.veiculos.get(infoPublicacoes[1].trim());
 				veic.addPublicacao(publi);
 				if(veic.getTipo() == 'C') {publi.setVolumeLocal(infoPublicacoes[6]);}
 				else if(veic.getTipo() == 'P'){publi.setVolumeLocal(infoPublicacoes[5]);}

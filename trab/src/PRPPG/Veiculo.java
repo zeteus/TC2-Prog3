@@ -32,6 +32,14 @@ public class Veiculo {
     public String getSigla() {return this.sigla;}
     public float getFatorImpacto() {return this.fatorImpacto;}
 
+
+    @Override
+    public String toString() {
+        String str = "Tipo: " + this.getTipo() +
+        "\nNome: " + this.getNome();
+        return str;
+    }
+
     public void addQualis(Qualis q) {this.qualis.put(q.getAno(), q);}
     public void addPublicacao(Publicacao p) {this.publicacoes.put(p.getNome(), p);}
 }
