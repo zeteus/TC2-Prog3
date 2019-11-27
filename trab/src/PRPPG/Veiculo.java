@@ -34,12 +34,11 @@ public class Veiculo {
 
     @Override
     public String toString() {
-        String str = "------VEICULO------"               +
+        return "------VEICULO------"                     +
         "\nTipo: "              + this.getTipo()         +
         "\nNome: "              + this.getNome()         +
         "\nSigla: "             + this.getSigla()        +
         "\nFator de impacto: "  + this.getFatorImpacto();
-        return str;
     }
     public void printQualis() {
         for (Integer q: qualis.keySet()){

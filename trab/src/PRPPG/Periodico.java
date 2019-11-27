@@ -18,12 +18,6 @@ public class Periodico extends Veiculo {
 
     @Override
     public String toString() {
-        String str = "------PERIODICO------"             +
-        "\nTipo: "              + this.getTipo()         +
-        "\nNome: "              + this.getNome()         +
-        "\nSigla: "             + this.getSigla()        +
-        "\nISSN: "              + this.getIssn()         +
-        "\nFator de impacto: "  + this.getFatorImpacto();
-        return str;
+        return super.toString() + "\nISSN: " + this.getIssn();
     }
 }

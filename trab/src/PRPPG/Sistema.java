@@ -1,6 +1,8 @@
 package PRPPG;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -54,7 +56,9 @@ public class Sistema {
 
 	// WRITE
 	public void write(String[] args) {
-		
+		this.gerarRelatorioRecredenciamento("recredenciamento.csv");
+		this.gerarRelatorioPublicacoes("publicacoes.csv");
+		this.gerarRelatorioEstatisticas("estatisticas.csv");
 	}
 
 	// READ
@@ -199,7 +203,7 @@ public class Sistema {
 				anos = Integer.parseInt(infoRegras[5]);
 				pontMin = Integer.parseInt(infoRegras[6]);
 				Regra r = new Regra(pontMin, anos, multp, dateI, dateF);
-				//System.out.println(r.toString());
+				System.out.println(r.toString());
 				this.regras.add(r);
 				line = bufferR.readLine();
 			}
@@ -246,5 +250,17 @@ public class Sistema {
 			}
 			bufferP.close();
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
-	} 
+	}
+
+	public void gerarRelatorioRecredenciamento(String nomeCaminho, String nomeArq) {
+		File diretorio = new File(nomeCaminho, nomeArq)
+	}
+
+	public void gerarRelatorioPublicacoes(String nomeArq) {
+
+	}
+
+	public void gerarRelatorioEstatisticas(String nomeArq) {
+
+	}
 }
