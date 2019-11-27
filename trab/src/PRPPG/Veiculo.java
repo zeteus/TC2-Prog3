@@ -32,14 +32,28 @@ public class Veiculo {
     public String getSigla() {return this.sigla;}
     public float getFatorImpacto() {return this.fatorImpacto;}
 
-
     @Override
     public String toString() {
-        String str = "Tipo: " + this.getTipo() +
-        "\nNome: " + this.getNome();
+        String str = "------VEICULO------"               +
+        "\nTipo: "              + this.getTipo()         +
+        "\nNome: "              + this.getNome()         +
+        "\nSigla: "             + this.getSigla()        +
+        "\nFator de impacto: "  + this.getFatorImpacto();
         return str;
     }
-
+    public void printQualis() {
+        for (Integer q: qualis.keySet()){
+            String key = q.toString();
+            String value = this.qualis.get(q).toString(); 
+            System.out.println("KEY: " + key + "\n" + value);  
+        }
+    }
+    public void printPublicacoes() {
+        for (String p: publicacoes.keySet()){
+            String value = this.publicacoes.get(p).toString();  
+            System.out.println("KEY: " + p + "\n" + value);  
+        }
+    }
     public void addQualis(Qualis q) {this.qualis.put(q.getAno(), q);}
     public void addPublicacao(Publicacao p) {this.publicacoes.put(p.getNome(), p);}
 }

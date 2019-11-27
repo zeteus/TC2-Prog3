@@ -112,6 +112,7 @@ public class Sistema {
 				if(infoDocentes.length == 5) {coord = true;}
 				else {coord = false;}
 				Docente doc = new Docente(cod, infoDocentes[1], coord, dateN, dateI);
+				//System.out.println(doc.toString());
 				this.docentes.put(doc.getCodigo(), doc);
 				line = bufferD.readLine();
 			}
@@ -138,6 +139,7 @@ public class Sistema {
 					if(tipo == 'P') {veic = new Periodico(tipo, infoVeiculos[1], infoVeiculos[4], infoVeiculos[0].trim(), impacto);}
 					else if(tipo == 'C') {veic = new Conferencia(tipo, infoVeiculos[1], infoVeiculos[0].trim(), impacto);}
 					else {System.err.printf("Inconsistencia na entrada.\n");}
+					//System.out.println(veic.toString());
 					this.veiculos.put(veic.getSigla(), veic);
 					line = bufferV.readLine();
 				}
@@ -159,9 +161,12 @@ public class Sistema {
 				infoQualis = line.split(";");
 				ano = Integer.parseInt(infoQualis[0]);
 				Qualis quali = new Qualis(ano, infoQualis[2]);
+				//System.out.println(quali.toString());
 				this.qualis.add(quali);
 				Veiculo veic = this.veiculos.get(infoQualis[1].trim());
 				veic.addQualis(quali);
+				//veic.printQualis();
+				//veic.printPublicacoes();
 				line = bufferQ.readLine();
 			}
 			bufferQ.close();
@@ -194,6 +199,7 @@ public class Sistema {
 				anos = Integer.parseInt(infoRegras[5]);
 				pontMin = Integer.parseInt(infoRegras[6]);
 				Regra r = new Regra(pontMin, anos, multp, dateI, dateF);
+				//System.out.println(r.toString());
 				this.regras.add(r);
 				line = bufferR.readLine();
 			}
@@ -228,12 +234,14 @@ public class Sistema {
 				for(int i = 0; i < listDocs.length; i++) {
 					Docente doc = this.docentes.get(Long.parseLong(listDocs[i].trim()));
 					doc.addPublicacao(publi);
+					//doc.printPublicacoes();
 				}
 				Veiculo veic = this.veiculos.get(infoPublicacoes[1].trim());
 				veic.addPublicacao(publi);
 				if(veic.getTipo() == 'C') {publi.setVolumeLocal(infoPublicacoes[6]);}
 				else if(veic.getTipo() == 'P'){publi.setVolumeLocal(infoPublicacoes[5]);}
 				else {System.out.printf("Erro de Parse \n");}
+				//System.out.println(publi.toString());
 				line = bufferP.readLine();
 			}
 			bufferP.close();

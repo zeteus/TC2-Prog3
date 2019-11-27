@@ -37,4 +37,21 @@ public class Docente {
 
     public void addPublicacao(Publicacao p) {this.publicacoes.put(p.getNome(), p);}
     public void quaisSaoSuasPublicacoes() {return;}
+
+    @Override
+    public String toString() {
+        String str = "------DOCENTE------"                        +
+        "\nCod: "            + this.getCodigo()                   +
+        "\nNome: "           + this.getNome()                     +
+        "\nCoord: "          + this.getCoordenador()              +
+        "\nData Nasc: "      + this.getDataNascimento().getTime() +
+        "\nData Ingresso: "  + this.getDataIngresso().getTime();
+        return str;
+    }
+    public void printPublicacoes() {
+        for (String p: publicacoes.keySet()){
+            String value = this.publicacoes.get(p).toString();  
+            System.out.println("KEY: " + p + "\n" + value);  
+        }
+    }
 }

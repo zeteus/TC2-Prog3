@@ -22,12 +22,25 @@ public class Regra {
     // setters
 	private void setPontuacaoMin(int pontuacaoMin) {this.pontuacaoMin = pontuacaoMin;}
 	private void setAnosConsiderados(int anosConsiderados) {this.anosConsiderados = anosConsiderados;}
+	private void setMultiplicador(float mult) {this.multiplicador = mult;}
 	private void setDataInicio(Calendar dataInicio) {this.dataInicio = dataInicio;}
 	private void setDataFim(Calendar dataFim) {this.dataFim = dataFim;}
 
     // getters
-	public int getPontuacaoMin() {return pontuacaoMin;}
-	public int getAnosConsiderados() {return anosConsiderados;}
-	public Calendar getDataInicio() {return dataInicio;}
-	public Calendar getDataFim() {return dataFim;}
+	public int getPontuacaoMin() {return this.pontuacaoMin;}
+	public int getAnosConsiderados() {return this.anosConsiderados;}
+	public float getMultiplicador() {return this.multiplicador;}
+	public Calendar getDataInicio() {return this.dataInicio;}
+	public Calendar getDataFim() {return this.dataFim;}
+
+	@Override
+    public String toString() {
+        String str = "------REGRA------" 				 	 +
+        "\nPontMin: " 		+ this.getPontuacaoMin() 	 	 +
+        "\nAnosCons: " 		+ this.getAnosConsiderados() 	 +
+        "\nMult: " 			+ this.getMultiplicador() 	 	 +
+        "\nData inicio: " 	+ this.getDataInicio().getTime() +
+		"\nData fim: " 		+ this.getDataFim().getTime();
+		return str;
+    }
 }

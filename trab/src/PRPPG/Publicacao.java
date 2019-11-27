@@ -32,4 +32,16 @@ public class Publicacao {
     public int getAnoPublicacao() {return this.anoPublicacao;}
     public int getPagInicial() {return this.pagInicial;}
     public int getPagFinal() {return this.pagFinal;}
+
+    @Override
+    public String toString() {
+        String str = "------PUUBLICACAO------" 		    +
+        "\nNome: " 	         + this.getNome() 	        +
+        "\nVolumeLocal: " 	 + this.getVolumeLocal()    +
+        "\nNumero: " 		 + this.getNumero() 	    +
+        "\nAno Publicacao: " + this.getAnoPublicacao()  +
+        "\nPagI: "  	     + this.getPagInicial()     +
+        "\nPagF: " 	         + this.getPagFinal();
+		return str;
+    }
 }

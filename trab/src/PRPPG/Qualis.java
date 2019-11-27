@@ -20,4 +20,13 @@ public class Qualis {
 	public int getAno() {return ano;}
 	public double getPonto() {return ponto;}
 	public String getValor() {return valor;}
+
+	@Override
+    public String toString() {
+        String str = "------QUALIS------"   +
+        "\nAno: "   + this.getAno()   		+
+        "\nPonto: " + this.getPonto() 		+
+        "\nValor: " + this.getValor();
+    	return str;
+    }
 }
