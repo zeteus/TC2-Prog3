@@ -24,12 +24,13 @@ public class Sistema {
 	public ArrayList<Regra> regras;
 	//METODOS
 	// constructor
-	public Sistema() {
+	public Sistema(int ano) {
 		this.docentes = new HashMap<Long, Docente>();
 		this.veiculos = new HashMap<String, Veiculo>();
 		this.publicacoes = new ArrayList<Publicacao>();
 		this.qualis = new ArrayList<Qualis>();
 		this.regras = new ArrayList<Regra>();
+		this.setAno(ano);
 	}
 	// setters
 	private void setAno(int ano) {this.ano = ano;}
@@ -136,13 +137,25 @@ public class Sistema {
 				line = bufferV.readLine();	// Ignora a primeira linha de leitura
 				line = bufferV.readLine();
 				while(line != null) {
+					Veiculo veic = null;
 					infoVeiculos = line.split(";");
 					tipo = infoVeiculos[2].charAt(0);
 					impacto = Float.parseFloat(infoVeiculos[3].replace(',','.'));
-					Veiculo veic = null;
-					if(tipo == 'P') {veic = new Periodico(tipo, infoVeiculos[1], infoVeiculos[4], infoVeiculos[0].trim(), impacto);}
-					else if(tipo == 'C') {veic = new Conferencia(tipo, infoVeiculos[1], infoVeiculos[0].trim(), impacto);}
-					else {System.err.printf("Inconsistencia na entrada.\n");}
+
+					switch (tipo) {
+						case 'P':
+						case 'p':
+							veic = new Periodico(tipo, infoVeiculos[1], infoVeiculos[4], infoVeiculos[0].trim(), impacto);
+							break;
+						
+						case 'C':
+						case 'c':
+							veic = new Conferencia(tipo, infoVeiculos[1], infoVeiculos[0].trim(), impacto);
+						default:
+							System.err.printf("Inconsistencia na entrada.\n");
+							break;
+					}
+					
 					//System.out.println(veic.toString());
 					this.veiculos.put(veic.getSigla(), veic);
 					line = bufferV.readLine();
@@ -252,8 +265,8 @@ public class Sistema {
 		} catch (IOException e) {System.err.printf("Erro na abertura do Arquivo %s.\n", e.getMessage());}
 	}
 
-	public void gerarRelatorioRecredenciamento(String nomeCaminho, String nomeArq) {
-		File diretorio = new File(nomeCaminho, nomeArq)
+	public void gerarRelatorioRecredenciamento(String nomeArq) {
+		File diretorio = new File(nomeArq)
 	}
 
 	public void gerarRelatorioPublicacoes(String nomeArq) {

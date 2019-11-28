@@ -35,18 +35,18 @@ public class Docente {
     public Calendar getDataNascimento() {return this.dataNascimento;}
     public Calendar getDataIngresso() {return this.dataIngresso;}
 
-    public void addPublicacao(Publicacao p) {this.publicacoes.put(p.getNome(), p);}
     public void quaisSaoSuasPublicacoes() {return;}
+    
+    public void addPublicacao(Publicacao p) {this.publicacoes.put(p.getNome(), p);}
 
     @Override
     public String toString() {
-        String str = "------DOCENTE------"                        +
+        return "------DOCENTE------"                              +
         "\nCod: "            + this.getCodigo()                   +
         "\nNome: "           + this.getNome()                     +
         "\nCoord: "          + this.getCoordenador()              +
         "\nData Nasc: "      + this.getDataNascimento().getTime() +
         "\nData Ingresso: "  + this.getDataIngresso().getTime();
-        return str;
     }
     public void printPublicacoes() {
         for (String p: publicacoes.keySet()){
@@ -54,4 +54,10 @@ public class Docente {
             System.out.println("KEY: " + p + "\n" + value);  
         }
     }
+
+    public int compareDoc(Docente doc) {return this.getNome().compareDoc(doc.getNome());}
+
+    public static Comparator<Docente> ComparadorD = new Comparator<Docente>() {
+        public int compare(Docente doc1, Docente doc2) {return doc1.compareDoc(doc2);}
+    };
 }
